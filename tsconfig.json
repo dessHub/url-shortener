@@ -1,6 +1,19 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": ["components/*"],
+      "@/ui": ["ui"],
+      "@/ui/*": ["ui/*"],
+      "@/helpers": ["helpers"],
+      "@/helpers/*": ["helpers/*"],
+      "@/utils": ["utils"],
+      "@/utils/*": ["utils/*"],
+      "@/types": ["types"],
+      "@/types/*": ["types/*"]
+    },
     "target": "es5",
+    "noImplicitAny": false,
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
