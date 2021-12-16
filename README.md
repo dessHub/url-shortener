@@ -1,4 +1,4 @@
-This is a simple URL shortening react/next application.
+This is a simple URL shortening react/next application. See live version [https://urlshortenerr.netlify.app/](https://urlshortenerr.netlify.app/)
 
 How to run the app locally:
 
