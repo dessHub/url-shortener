@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Urls, Url } from '@/types';
 import Styled from '@/components/pages/HomePage.styled';
 import StyledListCard from '@/components/ListCard.styled';
@@ -7,6 +7,7 @@ import Header from '@/components/Header.component';
 import InputComponent from '@/components/InputComponent.component';
 import ListCard from '@/components/ListCard.component';
 import { Colors } from '@/ui';
+import { v4 as uuidv4 } from 'uuid';
 
 const Home: NextPage = () => {
   const [urls, setUrls] = useState<Urls>([])
@@ -18,15 +19,70 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
+  useEffect(() => {
+    // Check if URL list already exist in the session storage and initialize the state with it.
+    sessionStorage.getItem("urlList") &&
+    setUrls(JSON.parse(sessionStorage.getItem("urlList") || '').urls);
+  }, [])
+
   const handleChange = (e) => {
     setUrl({
       ...url,
       long: e.target.value
     })
+    // check if input value is empty
+    if (e.target.value === '') {
+      setIsError(true);
+    } else {
+      setIsError(false);
+    }
   }
 
-  const handleSave = () => {
-    console.log('save')
+  const handleSave = async () => {
+    // Show error if input value is empty
+    if (url.long === '') {
+      setIsError(true)
+    } else {
+      setLoading(true);
+      setIsError(false);
+
+      try {
+        const response = await fetch(
+          `https://api.shrtco.de/v2/shorten?url=${url.long}`
+        );
+        let res = await response.json();
+
+        if (res.ok) {
+          setLoading(false);
+          const arr: Urls = [...urls];
+
+          // Add new url to the beginning of the array
+          arr.unshift({ long: url.long, short: res.result.short_link2, id: uuidv4()})
+          setUrls(arr)
+
+          const data = {
+            urls: arr
+          }
+
+          sessionStorage.setItem('urlList', JSON.stringify(data))
+          setUrl({
+            long: '',
+            short: '',
+            id: ''
+          })
+          setLoading(false)
+          return;
+        }
+
+        if (!res.ok) {
+          setLoading(false);
+          return;
+        }
+      } catch (e) {
+        setLoading(false);
+        return;
+      }
+    }
   }
 
   const handleCopy = () => {
