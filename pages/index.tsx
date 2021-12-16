@@ -8,6 +8,7 @@ import InputComponent from '@/components/InputComponent.component';
 import ListCard from '@/components/ListCard.component';
 import { Colors } from '@/ui';
 import { v4 as uuidv4 } from 'uuid';
+import { useAlert } from 'react-alert';
 
 const Home: NextPage = () => {
   const [urls, setUrls] = useState<Urls>([])
@@ -18,6 +19,7 @@ const Home: NextPage = () => {
   })
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const alert = useAlert();
 
   useEffect(() => {
     // Check if URL list already exist in the session storage and initialize the state with it.
@@ -71,15 +73,31 @@ const Home: NextPage = () => {
             id: ''
           })
           setLoading(false)
+
+          alert.show(
+            <div style={{ color: 'white', textTransform: 'initial' }}>
+              Url Shortened successfuly!
+            </div>,
+          );
           return;
         }
 
         if (!res.ok) {
           setLoading(false);
+          alert.error(
+            <div style={{ color: 'white', textTransform: 'initial' }}>
+              Something went wrong! Try again.
+            </div>,
+          );
           return;
         }
       } catch (e) {
         setLoading(false);
+        alert.error(
+          <div style={{ color: 'white', textTransform: 'initial' }}>
+            Something went wrong! Try again.
+          </div>,
+        );
         return;
       }
     }
