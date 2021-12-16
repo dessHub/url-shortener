@@ -112,8 +112,19 @@ const Home: NextPage = () => {
     );
   }
 
-  const handleDelete = () => {
-    console.log('delete')
+  const handleDelete = (id: string) => {
+    const urlList = [...urls.filter(item => item.id !== id)];
+    setUrls(urlList);
+    const data = {
+      urls: urlList
+    }
+
+    sessionStorage.setItem('urlList', JSON.stringify(data))
+    alert.show(
+      <div style={{ color: 'white', textTransform: 'initial' }}>
+        Url removed successfuly!
+      </div>,
+    );
   }
 
   return (
