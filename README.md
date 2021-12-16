@@ -27,3 +27,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 3. Styled components: It enables styling of components with plain CSS inside javascript code, which gives freedom to build custom components with CSS.
      - CSS-in-Style allows for scoped styles. 
      - Server-side rendering
+
+# External APIs integrated
+1. https://api.shrtco.de/v2/ from https://shrtco.de/docs/
