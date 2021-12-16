@@ -103,8 +103,13 @@ const Home: NextPage = () => {
     }
   }
 
-  const handleCopy = () => {
-    console.log('copy')
+  const handleCopy = async (longUrl: string) => {
+    await navigator.clipboard.writeText(longUrl);
+    alert.show(
+      <div style={{ color: 'white', textTransform: 'initial' }}>
+        Url copied successfuly!
+      </div>,
+    );
   }
 
   const handleDelete = () => {
